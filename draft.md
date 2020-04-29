@@ -41,8 +41,36 @@ Dataset:
 
 The data were loaded into a 410 * (112 * 92 + 1) matrix. Essentially, we are loading a flattened image on each row along the folder it belongs to. The folder number will act as a label.
 
+### Data Splitting
+
+Since when reading data from folders it is loaded orderly, i. e., most labels were still grouped up, the data were shuffled and only then split in train, test and validation sets (60 20 20). This was to ensure every label appeared at least once while training our model. @Joao-Nogueira-gh escreve mais coisas aqui nsei oq
+
+
 ## Implementaçao
 
 https://hackernoon.com/building-a-facial-recognition-pipeline-with-deep-learning-in-tensorflow-66e7645015b8
 
 isso pode ser util ou ent nao mas fica aqui na mma
+
+
+## Picking a Model
+
+Like explained above, we set out to try a set of machine learning models, pick the best-performing one and fine tune it. The models were either implemented by hand, using libraries or both, like Logistic Regression. 
+ 
+### Linear Regression
+
+One of the simplest Machine Learning models, Linear Regression consists of tweaking a set of parameters (Thetas) until they converge into a set of values that best translates the real world. This is called training. Since in our example we have 10304 pixels, our model will consist of a one by 10304 values, each corresponding to the correct weight each pixel should have in order to accurately predict classes. Since this model is usually used in continuous contexts and outputs a real number, we validated it by casting the output to an integer and comparing it with the right folder number, also cast to an integer.
+
+In order to do accomplish this, we focus on minimizing a function that allows us to understand how "far" our model is from reality. By finding the set of thetas that allows this minimum cost function, we achieve the parameters that bring our model the closest to reality. In our case, the cost function consists of <TODO_FILL_HERE>
+
+There is a number of algorithms that aim to reduce this cost function in the best way possible. These are called optimizers. The optimizer chosen for this model was the Gradient Descent. In Calculus, the gradient can be interpreted as the direction or rate of the fastest increase. Hence, it's inverse can be used to find a minimum of any function, namely the Cost Function. Naturally, this choice has a few caveats, such as local minima.
+
+Linear Regression was implemented by hand. Based on course code, we can pick a number of iterations (i. e. how many times the gradient will "descend") and a learning rate, how much it does descend every iteration. As explained, on every iteration we measure the cost function of the current thetas, calculate the gradient for the current position and tweak them in the direction told by the gradient, iteratively updating our parameters and, hopefully, dragging them closer to an accurate, real world prediction model. However, it is worth mentioning this model performs best for continuous values and not classification problems.
+
+As expected, this model performed pretty poorly predicting classes, obtaining only 1.2% accuracy on the validation set.
+
+### Logistic Regression
+
+For a classification problem, a much more suitable choice for a model would be Logistic Regression. It differs only on a few key concepts when compared to Linear Regression, such as the cost function calculation. For instance, in logistic regression the cost function is calculated by <TODO_FILL_HERE>.
+
+The rest is similar. We have a set of parameters we aim to reduce. When making predictions we multiply the resulting theta vector by our parameters and it outputs a list of numbers that can be translated to probabilites using a function such as softmax, where each represents the probability that this input corresponds to each idk label. 
