@@ -5,14 +5,13 @@
 
 ## Abstract
 
-The goal of this paper is to study and compare different Machine Learning models and their performances in the context of the classical problem of face recognition. The benchmarked models include Linear Regression, Logistic Regression, Support Vector Machines (SVM), Neural Networks and Decision Trees. After implementing and testing each of these, one is chosen and its hyper-parameters are finely tuned. We aim to present a system that is able to identify and recognize a subject's head in near-real-time without too much added complexity. In order to do this, every trained model will be thoroughly explained, as well as the corresponding development strategy. Furthermore, the data are gonna be studied and analyzed beforehand in order to more easily explain and troubleshoot problems when discussing results. This pre-processing consists of, essentially, plan ahead what classes are similar and more likely to be mislabelled and, in turn, lower the model's accuracy, recall and precision. Lastly, Eigenfaces will allow us to <TODO_IDK_IMPLEMENT_EIGENFACES?>
+The goal of this paper is to study and compare different Machine Learning models and their performances in the context of the classical problem of face recognition. The benchmarked models include Linear Regression, Logistic Regression, Support Vector Machines (SVM), Neural Networks and Decision Trees. After implementing and testing each of these, one is chosen and its hyper-parameters are finely tuned. We aim to present a system that is able to identify and recognize a subject's head in near-real-time without too much added complexity. In order to do this, every trained model will be shortly explained, as well as the corresponding development strategy. Furthermore, the data are gonna be studied and analyzed beforehand in order to more easily explain and troubleshoot problems when discussing results. This pre-processing consists of, essentially, plan ahead what classes are similar and more likely to be mislabelled and, in turn, lower the model's accuracy, recall and precision. Lastly, we will make use of Eigenfaces to reduce example dimensions and have a more efficient and faster system that is able to recognize faces via Principal Component Analysis. By doing this in the Exploratory Data Analysis, we will also have a better grasp of the data and the images that are most prone to being wrongly labelled by being too similar.
 
 ## Introduction
 
-Face recognition has proven to be of more and more use as technology advances. Real-time identification of individuals, further security when unlocking personal devices or even implementing a social credit point system like in China :) Unlike face detection, which focuses on understanding where a face is on a given picture, face recognition focuses on understanding who the face in a picture belongs to; in other words, identifying people.
+Face recognition has proven to be of more and more use as technology advances. Real-time identification of individuals, further security when unlocking personal devices or implementing a social credit point system. Unlike face detection, which consists of identifying where in a picture can faces be spotted [Omid no PPT q vinha com o DataSet], face recognition focuses on understanding who the face in a picture belongs to; in other words, identifying people. As mentioned before, this project aims to propose and develop a well-performing Machine Learning model that is able to recognize and identify faces with acceptable efficiency. This paper has the goal of explaining the thought process behind the development of said project, the obtained results when testing, validating and comparing different models and how feature extraction via PCA can prove to be of extreme relevance on such projects.
 
-The model that we use here is based on Hidden Markov Models and to extract features from images we use Singular Value Decomposition (SVD). You
-http://www.facerecognitioncode.com can think about the model as a black box that has two parts. The first part is for training. We give the model images of a number of people. Let’s say we give it 5 images for each person. This part is called training and the model learns to recognize these people. Then, the second part of the model is for testing. In testing we give the model, one image that we don’t know who he/she is. The model returns a probability for each person that it was trained on. For example if the model has learned 40 people then it gives us 40 probabilities. Each probability indicates how likely the input image could be that person. Then we simply can say that the person that returns the highest probability is in fact the person that is on the input image.
+This article is structured in the following manner: we will start by briefly reviewing and analysing past work done in similar such problems using similar, or even the same, dataset in the State of the Art Review section.
 
 ## State of the Art Review
 
@@ -39,11 +38,25 @@ Dataset:
 
 ## Data
 
-The data were loaded into a 410 * (112 * 92 + 1) matrix. Essentially, we are loading a flattened image on each row along the folder it belongs to. The folder number will act as a label.
+### Data description
 
-### Data Splitting
+The data used for the development of this project is the ORL Face Database. It consists of pictures of 40 people, where each person has had 10 photographs taken of them. The images have a height of 112 pixels by 92. They have been cropped and centered, so that the system can focus more on Facial Recognition, rather than an also popular problem in Machine Learning, Face Detection, as explained in the Introduction. Besides the people present in the original Dataset, a kind contributor has also added his pictures to the file system. Hence, our data consist of 410 112 by 92 greyscale images of 41 subjects, having 10 pictures each.
 
-Since when reading data from folders it is loaded orderly, i. e., most labels were still grouped up, the data were shuffled and only then split in train, test and validation sets (60 20 20). This was to ensure every label appeared at least once while training our model. @Joao-Nogueira-gh escreve mais coisas aqui nsei oq
+[SHOW HISTOGRAM]
+
+That being said, the data were loaded into a 410 * (112 * 92 + 1) matrix. We want to have a matrix that holds a flattened version of the image on each row and has the name of the subject on its last column. Since our dataset, unfortunately, did not come with named subjects, we simply labelled each individual with the folder number the picture was stored in. An example of the resulting matrix can be seen in Figure 1.
+
+[SHOW DATA.HEAD()]
+
+The images were stored in the Portable GreyMap format. In other words, each pixel corresponded to an integer, ranging from 0 to 255, where the closer to 0 the darker the represented color is. After loading the data, it was normalized. By normalizing the information that we are working with, we are assuring we prune out any anomaly that we might find as well as ease the system performance and data load. The chosen method to normalize our data was to simply divide each pixel by 255, which resulted in each of these being converted into a number between 0 and 1. 
+
+To make sure out data was properly loaded and parsed, we can randomly sample and display images in our dataset. Each of these has the corresponding label below them.
+
+[SHOW IMAGES]
+
+In order to load the data from the local folders into the script, we made use of Python's os library, which can traverse through the paths passed on as arguments recursively and retrieve the files in them. This resulted in most of the data being poorly mixed. In other words, same label images were bundled together in subsequent rows. Hence, when we split the data, the training set lacked a lot of information about other training examples. In order to prevent this, we shuffled the data beforehand, to dramatically increase the odds of such a scenario being near impossible. That being said, the split itself followed a regular distribution among sets: 60% (246 examples) for the training set, 20% (82 examples) for validation and testing sets.
+
+### Exploratory Data Analysis
 
 
 ## Implementaçao
@@ -112,7 +125,7 @@ Just like in other models, we defined three different sets of hyper-parameters, 
 
 ### Convolutional Neural Networks
 
-A common variation of a Neural Network consists of a Convolutional Neural Network (CNN) was developed and used, with the help of libraries such as Tensorflow and Keras. Convolutional Neural Networks are  neural networks that use convolution in place of general matrix multiplication in at least one of their layers. This choice is mainly due to the fact that, according to Keras: "The right tool for an image classification job is a convnet." [https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html]
+A common variation of a Neural Network consists of a Convolutional Neural Network (CNN). In our project, a simple CNN was developed and used, with the help of libraries such as Tensorflow and Keras. Convolutional Neural Networks are  neural networks that use convolution in place of general matrix multiplication in at least one of their layers. This choice is mainly due to the fact that, according to Keras: "The right tool for an image classification job is a convnet." [https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html]
 
 In this project, we implemented a CNN using third-party libraries such as TensorFlow and Keras. Keras allows building a Neural Network using a sequential model. In other words, we "build" our network by putting together layers. In our model we used Conv2D, MaxPooling and Dropout, developing a similar model to the one used in previous papers. [CITE MYSELF]
 
@@ -120,5 +133,19 @@ Our Neural Network performed fairly well for the training data, achieving an ove
 
 
 ### Decision Trees
+
+In decision analysis, a decision tree can be used to visually and explicitly represent decisions and decision making. As the name goes, it uses a tree-like model of decisions. Though a commonly used tool in data mining for deriving a strategy to reach a particular goal, it is also widely used in machine learning. [https://towardsdatascience.com/decision-trees-in-machine-learning-641b9c4e8052]
+
+<TODO_WRITE_MORE_THEORY_ABOUT_DECISION_TREES_ORNOT>
+
+In our project, a straight-forward Decision Tree Classifier was used, using the class provided by the scikit-learn library. This model allows us to select a few hyper-parameters, such as the criterion used for the split, the maximum depth of the generated tree and the mininum number of samples required to split an internal node. On a first approach, we trained our model with the "entropy" criterion, along with max_depth of 3 and a min_samples of 5.
+
+This resulted in a validation accuracy of 8.16%, so we can naturally infer our model is most likely overfitting the training data. After researching and reading further documentation [https://scikit-learn.org/stable/modules/tree.html#tips-on-practical-use], we can conclude this might be due to the high feature over training examples ratio. A possible workaround for this problem would be either through feature selection or data augmentation. However, since we already have well-performing models, we chose to simply discard this option for fine-tuning.
+
+
+## Fine-tuning the model
+
+Bearing in mind these results, we opted to fine-tune the Support Vector Machine model, since it was the one which presented the best accuracy.
+
 
 
