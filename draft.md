@@ -11,7 +11,7 @@ The goal of this paper is to study and compare different Machine Learning models
 
 Face recognition has proven to be of more and more use as technology advances. Real-time identification of individuals, further security when unlocking personal devices or implementing a social credit point system. Unlike face detection, which consists of identifying where in a picture can faces be spotted [Omid no PPT q vinha com o DataSet], face recognition focuses on understanding who the face in a picture belongs to; in other words, identifying people. As mentioned before, this project aims to propose and develop a well-performing Machine Learning model that is able to recognize and identify faces with acceptable efficiency. This paper has the goal of explaining the thought process behind the development of said project, the obtained results when testing, validating and comparing different models and how feature extraction via PCA can prove to be of extreme relevance on such projects.
 
-This article is structured in the following manner: we will start by briefly reviewing and analysing past work done in similar such problems using similar, or even the same, dataset in the State of the Art Review section.
+This article is structured in the following manner: we will start by briefly reviewing and analysing past work done in similar such problems using similar, or even the same, datasets in the State of the Art Review section. In the Data section, we will go through the content of the dataset, as well as explain its main features, how it was loaded, processed and split before it could be fed to our models. Additionally, we will also perform a short Exploratory Data Analysis by building the mean faces and Eigenfaces, which will allow us to find similar subjects and labels. Eigenfaces essentially consist of extracting the most relevant features regarding given subjects by means of Principal Component Analysis [paper das eigenfaces]. Once EDA has been completed, we will proceed towards the experimentation between different models for solving the task at hand in the Picking a Model section. Results will be briefly discussed and compared with other model's. In the Fine Tuning the Model section, we will pick a model and, as the name suggests, tweak the hyperparameters in order to maximize the model's performance. Lastly, we will discuss and display the results and conclusions obtained from this project, in the Results and Conclusions sections, respectively. 
 
 ## State of the Art Review
 
@@ -125,9 +125,9 @@ Just like in other models, we defined three different sets of hyper-parameters, 
 
 ### Convolutional Neural Networks
 
-A common variation of a Neural Network consists of a Convolutional Neural Network (CNN). In our project, a simple CNN was developed and used, with the help of libraries such as Tensorflow and Keras. Convolutional Neural Networks are  neural networks that use convolution in place of general matrix multiplication in at least one of their layers. This choice is mainly due to the fact that, according to Keras: "The right tool for an image classification job is a convnet." [https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html]
+A common variation of a Neural Network consists of a Convolutional Neural Network (CNN). In our project, a simple CNN was developed and used, with the help of libraries such as Tensorflow and Keras. Convolutional Neural Networks are  neural networks that use convolution in place of general matrix multiplication in at least one of their layers. According to Keras: "The right tool for an image classification job is a convnet." [https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html]
 
-In this project, we implemented a CNN using third-party libraries such as TensorFlow and Keras. Keras allows building a Neural Network using a sequential model. In other words, we "build" our network by putting together layers. In our model we used Conv2D, MaxPooling and Dropout, developing a similar model to the one used in previous papers. [CITE MYSELF]
+In this project, we implemented a CNN using third-party libraries such as TensorFlow and Keras. Keras allows building a Neural Network using a sequential model. In other words, the network itself is built by putting together layers. In our model we used Conv2D, MaxPooling and Dropout, developing a similar model to the one used in previous papers. [CITE MYSELF]
 
 Our Neural Network performed fairly well for the training data, achieving an overall training accuracy of 98.37%. However, when validating it, the accuracy fell short of 91% with a total score of 90.24%. We can naturally see this model is overfit for the data, but achieved a nevertheless good score.
 
@@ -145,7 +145,14 @@ This resulted in a validation accuracy of 8.16%, so we can naturally infer our m
 
 ## Fine-tuning the model
 
-Bearing in mind these results, we opted to fine-tune the Support Vector Machine model, since it was the one which presented the best accuracy.
+Bearing in mind these results, we opted to fine-tune the Support Vector Machine model, since it was the one which presented the best accuracy. However, instead of using a Holdout validation set like we did when choosing a model, we opted to implement K-fold cross validation for each hyperparameter.
+
+There is a number of ways to perform validate models. The reason behind our choice lies vastly on the results discussed by Rodríguez J. and Lazaro J. [https://www.researchgate.net/publication/224085226_Sensitivity_Analysis_of_k-Fold_Cross_Validation_in_Prediction_Error_Estimation]. 
+
+
+## Results
+
+## Conclusions
 
 
 
