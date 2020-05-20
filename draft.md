@@ -58,14 +58,6 @@ In order to load the data from the local folders into the script, we made use of
 
 ### Exploratory Data Analysis
 
-
-## Implementaçao
-
-https://hackernoon.com/building-a-facial-recognition-pipeline-with-deep-learning-in-tensorflow-66e7645015b8
-
-isso pode ser util ou ent nao mas fica aqui na mma
-
-
 ## Picking a Model
 
 Like explained above, we set out to try a set of machine learning models, pick the best-performing one and fine tune it. The models were either implemented by hand, using libraries or both, like Logistic Regression. In order to more accurately pick a best-performing model, instead of simply training and validating one instance with randomly selected hyper-parameters, we tried to increase the odds of developing and picking a good model by creating and comparing three different sets of hyper-parameters. This way, we can pick the model that behaves the best based on its best set of hyper-parameters. This curation of hyper-parameters was only implemented on the custom methods, since the libraries dynamically adapt most of the initial hyper-parameters.
@@ -108,7 +100,7 @@ An also fitting choice for a classification problem would be a Support Vector Ma
 
 The cost function used in this model typically consists of an adaptation of the Logistic Regression cost function. Furthermore, it adds a regularization parameter C, which adjusts the penalty for misclassified training examples. Much like past models, the optimization objective of a SVM consists of finding a set of Thetas that brings the hypothesis as close as possible to reality, i. e., minimizes the cost function.
 
-The library scikit-learn also offers a built-in SVM model, which needs only the initial hyper-parameters, such as C. For our model, we chose the default value for the penalization attribute: one. This resulted in a final validation accuracy of 98.78%.
+The library scikit-learn also offers a built-in SVM model, which needs only the initial hyper-parameters, such as C. For our model, we chose the default value for the penalization attribute: one. This resulted in a final validation accuracy of 98.78%. The tweakable hyper-parameters this model has will be further explained later on.
 
 
 ### Neural Networks
@@ -147,10 +139,24 @@ This resulted in a validation accuracy of 8.16%, so we can naturally infer our m
 
 Bearing in mind these results, we opted to fine-tune the Support Vector Machine model, since it was the one which presented the best accuracy. However, instead of using a Holdout validation set like we did when choosing a model, we opted to implement K-fold cross validation for each hyperparameter.
 
-There is a number of ways to perform validate models. The reason behind our choice lies vastly on the results discussed by Rodríguez J. and Lazaro J. [https://www.researchgate.net/publication/224085226_Sensitivity_Analysis_of_k-Fold_Cross_Validation_in_Prediction_Error_Estimation]. 
+There is a number of ways to perform model validation. The reason behind our choice lies vastly on the results discussed by Rodríguez J. and Lazaro J. [https://www.researchgate.net/publication/224085226_Sensitivity_Analysis_of_k-Fold_Cross_Validation_in_Prediction_Error_Estimation]. According to the paper, K-fold validation represents a good sensitive measure to properly validate models. This way we can be sure of the results obtain as we fine-tune our model using the aforementioned algorithm.
+
+Our model hyper-parameter selection was hence done by generating a logarithmically spaced range of values for both C and gamma. C controls the tradeoff between a smooth decision boundary and classifying training points correctly [https://www.youtube.com/watch?v=joTa_FeMZ2s]. In other words, a larger C will mean a lower bias  but, in turn, result in a higer variance for our model. A lower C generally implies higher bias but less varying results. On the other hand, we also fine-tuned the gamma hyper-parameter, is the parameter of a Gaussian Kernel, which is used to handle non-linear classification. A common solution for non-linearly separable data when using Support Vector Machines is to raise the data to a higher dimension, so that it can be separated using hyperplanes. Usually for such cases an RBF kernel is used, but as we can see from the plots in Figure X, we obtained far better results using a linear one. 
+
+The method for finding the best hyperparameters was done using the Grid Search algorithm. Grid-searching is the process of scanning the data to configure optimal parameters for a given model. Depending on the type of model utilized, certain parameters are necessary, such as, in our case, C and gamma. Since Grid-searching can be applied across machine learning to calculate the best parameters to use for any given model, such an algorithm is vastly used when it comes to fine-tuning machine learning models. It is important to note, however, that Grid-searching can be extremely computationally expensive and may take quite a long time to run, since it iterates through every parameter combination and stores a model for each combination. In other words, Grid Search will build a model for each parameter combination possible and test it [https://medium.com/@elutins/grid-searching-in-machine-learning-quick-explanation-and-python-implementation-550552200596]. 
+
+Each of these combinations is then tested and validated against one of the K-fold training-validation sets. In our method we used K = 3, meaning this rotation was done three times for each combination of parameters. The average of results was then calculated and plotted, as we can see in Figure X.
+
+[INSERT PLOTS FOR SVMs {linear, rbf} HERE]
 
 
 ## Results
+
+### Without feature extraction
+
+
+### With feature extraction using Eigenfaces
+
 
 ## Conclusions
 
