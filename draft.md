@@ -53,7 +53,7 @@ To make sure out data was properly loaded and parsed, we can randomly sample and
 
 [SHOW IMAGES]
 
-In order to load the data from the local folders into the script, we made use of Python's os library, which can traverse through the paths passed on as arguments recursively and retrieve the files in them. This resulted in most of the data being poorly mixed. In other words, same label images were bundled together in subsequent rows. Hence, when we split the data, the training set lacked a lot of information about other training examples. In order to prevent this, we shuffled the data beforehand, to dramatically increase the odds of such a scenario being near impossible. That being said, the split itself followed a regular distribution among sets: 60% (246 examples) for the training set, 20% (82 examples) for validation and testing sets.
+In order to load the data from the local folders into the script, we made use of Python's os library, which can traverse through the paths passed on as arguments recursively and retrieve the files in them. This resulted in most of the data being poorly mixed. In other words, same label images were bundled together in subsequent rows. Hence, when we split the data, the training set lacked a lot of information about other training examples. In order to prevent this, we shuffled the data beforehand, to dramatically increase the odds of such a scenario being near impossible. However, we noticed that this some times would lead us to have no classes show up on the test set. Hence, before splitting after the shuffle, we instance the test set with at least one example of each class. Afterwards, splitting is done normally: 60% (246 examples) for the training set, 20% (82 examples) for validation and testing sets.
 
 ### Exploratory Data Analysis
 
@@ -155,7 +155,7 @@ The selection of the best hyper-parameters for a model is done automatically, on
 
 ### Without feature extraction
 
-When using unregularized parameters and no Principal Component Analysis or other means of feature extraction, the model takes a total time of around 665 seconds to be finely tuned and trained. As to making predictions, once it has been tuned, it is able to predict 82 testing examples in under 0.5 seconds, which results in a total of 164 predictions per second or, in other words, 0.006 seconds per prediction.. We obtained a total accuracy of 98\% on the testing set, as well as an F1 Score, Precision and Recall scores of X, Y and Z, respectively.  The obtained confusion matrix can be seen below. It is worth mentioning however, since the sets have been shuffled before being used, it is possible for some classes show up in training and not in testing, hence some labels have no data represented in the matrix. We can notice, however, our model has wrongly classified the class number 5 as 40. Two fairly similar individuals, as we can see in Figure X.
+When using unregularized parameters and no Principal Component Analysis or other means of feature extraction, the model takes a total time of around 665 seconds to be finely tuned and trained. As to making predictions, once it has been tuned, it is able to predict 82 testing examples in under 0.5 seconds, which results in a total of 164 predictions per second or, in other words, 0.006 seconds per prediction.. We obtained a total accuracy of 98\% on the testing set, as well as an F1 Score, Precision and Recall scores of X, Y and Z, respectively.  The obtained confusion matrix can be seen below. It is worth mentioning however, if the training and testing sets that have previously been shuffled before had not had the processing of "picking" one example of each class before splitting, it would have been possible for some classes show up in training and not in testing and hence some labels to have no data represented in the matrix.
 
 [SHOW CONFUSION MATRIX]
 
@@ -165,7 +165,7 @@ If we randomly select a few testing samples however, we notice the model perform
 
 [SHOW COOL PREDICTIONS]
 
-Comparing the results obtained with those stated by [3], we already achieve a better model accuracy and overall metrics. What more can i say here
+Comparing the results obtained with those stated by [3], we already achieve a better model accuracy and overall metrics, given they obtained less than 92%. 
 
 
 ### With feature extraction using Eigenfaces
