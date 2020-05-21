@@ -15,26 +15,25 @@ This article is structured in the following manner: we will start by briefly rev
 
 ## State of the Art Review
 
-Here we  will be analyzing five papers on the subject of face recognition,
+For this project, we researched and studied 5 papers that we considered relevant for our goal: to find a well performing machine learning model for face recognition. We tried to cover the main models we implemented throughout the project as well as papers that used the same data as ours: the ORL face database.
 
-ORL database with SVM:
-https://www.researchgate.net/publication/2427763_Face_Recognition_by_Support_Vector_Machines
-
-ORL database with CNN:
-https://www.cs.cmu.edu/afs/cs/user/bhiksha/WWW/courses/deeplearning/Fall.2016/pdfs/Lawrence_et_al.pdf
-
-https://www.researchgate.net/publication/332865261_Machine_Learning_approaches_for_Face_Identification_Feed_Forward_Algorithms
-
-https://www.researchgate.net/publication/300795728_Deep_learning_and_face_recognition_the_state_of_the_art
-
-M. Turk and A. Pentland :
+* M. Turk and A. Pentland [1] in their paper "Face Recognition Using Eigenfaces"  treat face recognition as a two-dimensional recognition problem, taking advantage of the fact that faces are normally upright and thus may be described by a small set of 2-D characteristic views. They then project faces into a "face space", defined by the eigenvectors of the set of faces.
 https://www.cin.ufpe.br/~rps/Artigos/Face%20Recognition%20Using%20Eigenfaces.pdf
 
-Dataset:
- F. Samaria and A. Harter
-  "Parameterisation of a stochastic model for human face identification"
-  2nd IEEE Workshop on Applications of Computer Vision
-  December 1994, Sarasota (Florida).
+* F. S. Samaria and A. C. Harter [2] in the paper "Parameterization of a stochastic model" for human face identification propose a top-bottom Hidden Markov Model that allows feature encoding and focus on the parameterisation of such a model, resulting on a testing accuracy of 87\%.
+
+* Guodong Guo, Stan Z. Li, and Kapluk Chan [3] in the paper "Face Recognition by Support Vector Machines" study the performance of Support Vector Machines with a binary tree recognition strategy using the ORL database and an extended version of such. They also compare SVM performance with the standard Eigenface approach using Nearest Center Classification. They achieved a total accuracy of 91.21\%.
+https://www.researchgate.net/publication/2427763_Face_Recognition_by_Support_Vector_Machines
+
+* Steve Lawrence, C. Lee Giles, Ah Chung Tsoi and Andrew D. Back [4] in the paper "Face Recognition: A Convolutional Neural-Network Approach" present a hybrid neural-network solution for Face Recognition and compare it with Hidden Markov Model based approaches. Their final model obtained a total of 96.2\% test accuracy on the ORL face dataset.
+https://www.cs.cmu.edu/afs/cs/user/bhiksha/WWW/courses/deeplearning/Fall.2016/pdfs/Lawrence_et_al.pdf
+
+* Ratnesh Kumar Shukla and Arvind Kumar Tiwari [5] in the paper "Machine Learning approaches for Face Identification Feed Forward Algorithms" discuss the use of Convolutional Neural Networks and Deep Learning for face identification. 
+https://www.researchgate.net/publication/332865261_Machine_Learning_approaches_for_Face_Identification_Feed_Forward_Algorithms
+
+* Stephen Baladan [6] focuses on discussing the state of the Art of Deep Learning the field of Face Recognition in his paper "Deep learning and face recognition: the state of the art", arguing the best Model is Google FaceNet with a total accuracy of 0.9963 using a dataset of 200 million images. 
+https://www.researchgate.net/publication/300795728_Deep_learning_and_face_recognition_the_state_of_the_art
+
 
 ## Data
 
@@ -152,7 +151,21 @@ Each of these combinations is then tested and validated against one of the K-fol
 
 ## Results
 
+The selection of the best hyper-parameters for a model is done automatically, once the grid-search is completed. Below are the obtained results for this experiment with and without feature extraction and their discussion. In the former, feature extraction was done using Principal Component Analysis and generating Eigenfaces, following the methodology developed by Turk and Pentland [PAPER DAS EIGENFACES]. Further details will also be explained in that subsection.
+
 ### Without feature extraction
+
+When using unregularized parameters and no Principal Component Analysis or other means of feature extraction, the model takes a total time of around 665 seconds to be finely tuned and trained. As to making predictions, once it has been tuned, it is able to predict 82 testing examples in under 0.5 seconds, which results in a total of 164 predictions per second or, in other words, 0.006 seconds per prediction.. We obtained a total accuracy of 98\% on the testing set, as well as an F1 Score, Precision and Recall scores of X, Y and Z, respectively.  The obtained confusion matrix can be seen below. It is worth mentioning however, since the sets have been shuffled before being used, it is possible for some classes show up in training and not in testing, hence some labels have no data represented in the matrix. We can notice, however, our model has wrongly classified the class number 5 as 40. Two fairly similar individuals, as we can see in Figure X.
+
+[SHOW CONFUSION MATRIX]
+
+[SHOW WRONG PREDICTIONS]
+
+If we randomly select a few testing samples however, we notice the model performs reasonably well at predicting the represented subjects.
+
+[SHOW COOL PREDICTIONS]
+
+Comparing the results obtained with those stated by [3], we already achieve a better model accuracy and overall metrics. What more can i say here
 
 
 ### With feature extraction using Eigenfaces
