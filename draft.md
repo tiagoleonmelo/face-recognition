@@ -57,6 +57,16 @@ In order to load the data from the local folders into the script, we made use of
 
 ### Exploratory Data Analysis
 
+When performing EDA in Face Recognition problems, we considered relevant to plot the mean face for each class and inspect similar results, in order to have a better grasp on which classes are more likely to be wrongly labelled when making predictions as well as total average face, to understand how well formatted images are. From the figure, we can immediately infer most of the images in the dataset have been either poorly cropped or centered, since we do not have a clean, understandable face, and rather a blur.
+
+[SHOW MEAN FACE]
+
+As to the average faces per class, when calculating the MSE between each classes we obtain rather noisy and unclear results. Our explanation for such is that since most images are "alike", given they are all faces, MSE is not the best approach for doing this kind of EDA. We can also notice that the first subject seems to differ a lot from others, but this is likely due to different photography conditions since, as we can recall, our first subject is the individual that made their own contribution to the dataset.
+
+[SHOW MEAN FACES PER CLASS]
+
+[SHOW CONF MAT]
+
 ## Picking a Model
 
 Like explained above, we set out to try a set of machine learning models, pick the best-performing one and fine tune it. The models were either implemented by hand, using libraries or both, like Logistic Regression. In order to more accurately pick a best-performing model, instead of simply training and validating one instance with randomly selected hyper-parameters, we tried to increase the odds of developing and picking a good model by creating and comparing three different sets of hyper-parameters. This way, we can pick the model that behaves the best based on its best set of hyper-parameters. This curation of hyper-parameters was only implemented on the custom methods, since the libraries dynamically adapt most of the initial hyper-parameters.
@@ -113,6 +123,8 @@ Additionally, since we have a Classification problem with multiple labels, we wi
 
 Just like in other models, we defined three different sets of hyper-parameters, to increase the chances of finding a well representative model of a Neural Network's performance in the context of this problem. The variation of the cost function of each developed model can be seen on the plot on figure X. Naturally, let us pick the set of hyper-parameters that converges to the lowest cost function the fastest. After validation, we observed a total accuracy of X %.
 
+[SHOW COST FUNCTION NEURAL NETWORKS]
+
 
 ### Convolutional Neural Networks
 
@@ -140,13 +152,11 @@ Bearing in mind these results, we opted to fine-tune the Support Vector Machine 
 
 There is a number of ways to perform model validation. The reason behind our choice lies vastly on the results discussed by Rodríguez J. and Lazaro J. [https://www.researchgate.net/publication/224085226_Sensitivity_Analysis_of_k-Fold_Cross_Validation_in_Prediction_Error_Estimation]. According to the paper, K-fold validation represents a good sensitive measure to properly validate models. This way we can be sure of the results obtain as we fine-tune our model using the aforementioned algorithm.
 
-Our model hyper-parameter selection was hence done by generating a logarithmically spaced range of values for both C and gamma. C controls the tradeoff between a smooth decision boundary and classifying training points correctly [https://www.youtube.com/watch?v=joTa_FeMZ2s]. In other words, a larger C will mean a lower bias  but, in turn, result in a higer variance for our model. A lower C generally implies higher bias but less varying results. On the other hand, we also fine-tuned the gamma hyper-parameter, is the parameter of a Gaussian Kernel, which is used to handle non-linear classification. A common solution for non-linearly separable data when using Support Vector Machines is to raise the data to a higher dimension, so that it can be separated using hyperplanes. Usually for such cases an RBF kernel is used, but as we can see from the plots in Figure X, we obtained far better results using a linear one. 
+Our model hyper-parameter selection was hence done by generating a logarithmically spaced range of values for both C and gamma. C controls the tradeoff between a smooth decision boundary and classifying training points correctly [https://www.youtube.com/watch?v=joTa_FeMZ2s]. In other words, a larger C will mean a lower bias  but, in turn, result in a higer variance for our model. A lower C generally implies higher bias but less varying results. On the other hand, we also fine-tuned the gamma hyper-parameter, is the parameter of a Gaussian Kernel, which is used to handle non-linear classification. A common solution for non-linearly separable data when using Support Vector Machines is to raise the data to a higher dimension, so that it can be separated using hyperplanes. Usually for such cases an RBF kernel is used, we obtained far more stable results using a linear one on both with and without feature extraction, as discussed in the Results section.
 
 The method for finding the best hyperparameters was done using the Grid Search algorithm. Grid-searching is the process of scanning the data to configure optimal parameters for a given model. Depending on the type of model utilized, certain parameters are necessary, such as, in our case, C and gamma. Since Grid-searching can be applied across machine learning to calculate the best parameters to use for any given model, such an algorithm is vastly used when it comes to fine-tuning machine learning models. It is important to note, however, that Grid-searching can be extremely computationally expensive and may take quite a long time to run, since it iterates through every parameter combination and stores a model for each combination. In other words, Grid Search will build a model for each parameter combination possible and test it [https://medium.com/@elutins/grid-searching-in-machine-learning-quick-explanation-and-python-implementation-550552200596]. 
 
 Each of these combinations is then tested and validated against one of the K-fold training-validation sets. In our method we used K = 3, meaning this rotation was done three times for each combination of parameters. The average of results was then calculated and plotted, as we can see in Figure X.
-
-[INSERT PLOTS FOR SVMs {linear, rbf} HERE]
 
 
 ## Results
@@ -155,23 +165,46 @@ The selection of the best hyper-parameters for a model is done automatically, on
 
 ### Without feature extraction
 
-When using unregularized parameters and no Principal Component Analysis or other means of feature extraction, the model takes a total time of around 665 seconds to be finely tuned and trained. As to making predictions, once it has been tuned, it is able to predict 82 testing examples in under 0.5 seconds, which results in a total of 164 predictions per second or, in other words, 0.006 seconds per prediction.. We obtained a total accuracy of 98\% on the testing set, as well as an F1 Score, Precision and Recall scores of X, Y and Z, respectively.  The obtained confusion matrix can be seen below. It is worth mentioning however, if the training and testing sets that have previously been shuffled before had not had the processing of "picking" one example of each class before splitting, it would have been possible for some classes show up in training and not in testing and hence some labels to have no data represented in the matrix.
+When using unregularized parameters and no Principal Component Analysis or other means of feature extraction, the two models (using Linear and RBF kernels) take a total time of 1176.039 seconds to be finely tuned and trained using Grid-Search.
+
+[INSERT PLOTS FOR SVMs {linear, rbf} HERE]
+
+As to making predictions, once it has been tuned, it is able to predict 82 testing examples in under 0.5 seconds, which results in a total of 164 predictions per second or, in other words, 0.006 seconds per prediction. We obtained a total accuracy of 100\% on the testing set, which results in a F1, Precision and Recall scores of 1.00.  The obtained confusion matrix can be seen below. It is worth mentioning however, if the training and testing sets that have previously been shuffled before had not had the processing of "picking" one example of each class before splitting, it would have been possible for some classes show up in training and not in testing and hence some labels to have no data represented in the matrix.
 
 [SHOW CONFUSION MATRIX]
 
-[SHOW WRONG PREDICTIONS]
-
-If we randomly select a few testing samples however, we notice the model performs reasonably well at predicting the represented subjects.
+If we randomly select a few testing samples, we notice the model performs reasonably well at predicting the represented subjects.
 
 [SHOW COOL PREDICTIONS]
 
-Comparing the results obtained with those stated by [3], we already achieve a better model accuracy and overall metrics, given they obtained less than 92%. 
+Comparing the results obtained with those stated by [3], we already achieve a better model accuracy and overall metrics, given they obtained less than 92%. Let us now analyze how well our model does when using feacture extraction.
 
 
-### With feature extraction using Eigenfaces
+### With feature extraction using Principal Component Analysis
+
+As proposed in [1], by projecting face images into a feature space that best encodes the variation among known face images, we can achieve a much superior performance through means of feature reduction/extraction. The feature space is defined by the eigenvectors of each face: the eigenfaces, which do not necessarily correspond to real facial features, such as eyes, noses or ears. These eigenvectors are obtained using PCA.
+
+As to when these methods are applied and the facial features are extracted through Principal Component Analysis, the two models (once again, with Linear and RBF kernels) display much higher performance. In this example, we opted to reduce the feature space to 100 features, from the original 10304. Some of the obtained Eigenfaces can be seen in Figure X.
+
+[SHOW EIGENFACES]
+
+Fine-tuning our Support Vector Machines takes a total time of 665 seconds using Grid-Search, about 6 times less compared to the model fine-tuning without any feature extractions.
+
+[INSERT PLOTS FOR SVMs {linear, rbf} HERE]
+
+The quantative evaluation of the model quality on the test set shows nevertheless similar results. When using PCA, we obtained a total accuracy of 98\% on the testing set, as well as an F1 Score, Precision and Recall scores of X, Y and Z, respectively.  The obtained confusion matrix can also be seen below. 
+
+[SHOW CONFUSION MATRIX]
+
+The qualitative comparison between the two approaches can be seen in Table 1, along with the obtained metrics.
+
+[SHOW TABLE COMPARING PCA VS NO PCA]
 
 
 ## Conclusions
 
+Thanks to this project we can have a much better understand of the underlying foundations of the current State of the Art when solving Face Recognition problems. Approaches such as HMM and using Eigenfaces played a major role in the development of solutions in this field. In this project, we also had the chance to understand and study advanced mathematical concepts such as Eigenvectors and how they can be applied in Machine Learning and real world problems, by implementing and visualizing Eigenfaces. Albeit not implemented, thanks to this paper we learned more about Hidden Markov Models as seen in [2].
+
+As to results, when picking a model we immediately spot Support Vector Machines constitute a great choice for pattern recognition even in complex problems as such. Furthermore, we can infer feature extraction drastically increases model performance at a very reasonable price. We also learned feature extraction from faces using Principal Component Analysis, as well as using the Grid Search algorithm to fine tune machine learning models.
 
 
