@@ -134,6 +134,8 @@ In this project, we implemented a CNN using third-party libraries such as Tensor
 
 Our Neural Network performed fairly well for the training data, achieving an overall training accuracy of 98.37%. However, when validating it, the accuracy fell short of 91% with a total score of 90.24%. We can naturally see this model is overfit for the data, but achieved a nevertheless good score.
 
+[SHOW CNN PLOT]
+
 
 ### Decision Trees
 
@@ -173,7 +175,7 @@ As to making predictions, once it has been tuned, it is able to predict 82 testi
 
 [SHOW CONFUSION MATRIX]
 
-If we randomly select a few testing samples, we notice the model performs reasonably well at predicting the represented subjects.
+If we randomly select a few testing samples, we notice the model performs well at predicting the represented subjects.
 
 [SHOW COOL PREDICTIONS]
 
